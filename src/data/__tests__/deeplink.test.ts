@@ -123,6 +123,16 @@ describe('deep links', () => {
   it('ignores a malformed or out-of-range ll and falls back to the address', () => {
     expect(readDeepLink('?at=D%20%26%203%3A15&ll=not-a-coordinate')).toEqual({ at: 'D & 3:15' })
     expect(readDeepLink('?at=D%20%26%203%3A15&ll=200,95')).toEqual({ at: 'D & 3:15' })
+    expect(readDeepLink('?at=D%20%26%203%3A15&ll=-119.203')).toEqual({ at: 'D & 3:15' })
+    expect(readDeepLink('?at=D%20%26%203%3A15&ll=-119.203,')).toEqual({ at: 'D & 3:15' })
+    expect(readDeepLink('?at=D%20%26%203%3A15&ll=,40.786')).toEqual({ at: 'D & 3:15' })
+    expect(readDeepLink('?at=D%20%26%203%3A15&ll=-119.203,40.786,garbage')).toEqual({
+      at: 'D & 3:15',
+    })
+    expect(readDeepLink('?at=D%20%26%203%3A15&ll=-119.203,40.786,0')).toEqual({ at: 'D & 3:15' })
+    expect(readDeepLink('?at=D%20%26%203%3A15&ll=-119.203,40.786,-120,41')).toEqual({
+      at: 'D & 3:15',
+    })
   })
 
   it('round-trips ll through a URL at sub-meter precision', () => {

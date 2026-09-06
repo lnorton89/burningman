@@ -12,8 +12,10 @@ export interface DeepLink {
 }
 
 function parsePosition(raw: string): Position | undefined {
-  const [lngRaw, latRaw] = raw.split(',')
-  if (lngRaw === undefined || latRaw === undefined) return undefined
+  const parts = raw.split(',')
+  if (parts.length !== 2) return undefined
+  const [lngRaw, latRaw] = parts
+  if (!lngRaw.trim() || !latRaw.trim()) return undefined
   const lng = Number(lngRaw)
   const lat = Number(latRaw)
   if (!Number.isFinite(lng) || !Number.isFinite(lat)) return undefined
